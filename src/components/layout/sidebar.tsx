@@ -198,24 +198,31 @@ export const Sidebar: FC<SidebarProps> = ({ isMobile }) => {
                         )}
                       </button>
 
-                      {isExpanded && children.map((child) => {
-                        const ChildIcon = child.icon ?? Icon;
-                        const isActive = pathname === child.href;
+                      <div
+                        className={cn(
+                          "overflow-hidden transition-all duration-300 ease-in-out",
+                          isExpanded ? "max-h-[200px]" : "max-h-0"
+                        )}
+                      >
+                        {children.map((child) => {
+                          const ChildIcon = child.icon ?? Icon;
+                          const isActive = pathname === child.href;
 
-                        return (
-                          <Link
-                            key={child.href}
-                            href={child.href}
-                            className={cn(
-                              "ml-6 flex items-center gap-2 rounded-md px-3 py-2 text-sm text-sky-800",
-                              isActive && "text-sky-900 font-medium"
-                            )}
-                          >
-                            {ChildIcon && <ChildIcon className="h-4 w-4" />}
-                            <span>{child.name}</span>
-                          </Link>
-                        );
-                      })}
+                          return (
+                            <Link
+                              key={child.href}
+                              href={child.href}
+                              className={cn(
+                                "ml-6 flex items-center gap-2 rounded-md px-3 py-2 text-sm text-sky-800",
+                                isActive && "text-sky-900 font-medium"
+                              )}
+                            >
+                              {ChildIcon && <ChildIcon className="h-4 w-4" />}
+                              <span>{child.name}</span>
+                            </Link>
+                          );
+                        })}
+                      </div>
                     </div>
                   );
                 }

@@ -24,6 +24,14 @@ const departmentData = [
   { department: "Engineering", attendance: 87 },
 ];
 
+const data = [
+  { name: "Business Mgmt", present: 45, absent: 10 },
+  { name: "Law", present: 38, absent: 7 },
+  { name: "Health Science", present: 50, absent: 12 },
+  { name: "IT", present: 42, absent: 8 },
+  { name: "Engineering", present: 36, absent: 14 },
+];
+
 const lecturerPieData = [
   { name: "Business Management", attendance: 92 },
   { name: "Law", attendance: 88 },
@@ -39,7 +47,7 @@ export default function DashboardPage() {
     <div className="flex flex-col gap-6">
       <Card className="border-sky-100 bg-sky-50/70">
         <CardHeader className="pb-3">
-          <CardTitle className="text-xl font-semibold tracking-tight">
+          <CardTitle className="text-5xl font-semibold tracking-tight text-[#002147]">
             Quality Assurance Dashboard
           </CardTitle>
           <p className="text-sm text-muted-foreground">
@@ -48,34 +56,36 @@ export default function DashboardPage() {
         </CardHeader>
         <CardContent className="pt-0 pb-5">
           <div className="grid gap-4 md:grid-cols-3">
-            <Card className="shadow-none border-slate-200">
+            <Card className="shadow-none border-slate-200 text-[#002147]">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Enrolled students</CardTitle>
-                <Badge variant="secondary">Today</Badge>
+                <CardTitle className="text-base font-semibold">Enrolled students</CardTitle>
+                <Badge variant="secondary" className="text-xs font-semibold text-[#002147]">
+                  Today
+                </Badge>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">4,326</div>
-                <p className="text-xs text-muted-foreground">+12.4% from last term</p>
+                <div className="text-3xl font-bold">4,326</div>
+                <p className="text-sm text-[#002147]">+12.4% from last term</p>
               </CardContent>
             </Card>
 
-            <Card className="shadow-none border-slate-200">
+            <Card className="shadow-none border-slate-200 text-[#002147]">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Active courses</CardTitle>
+                <CardTitle className="text-base font-semibold">Active courses</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">128</div>
-                <p className="text-xs text-muted-foreground">Across 7 faculties</p>
+                <div className="text-3xl font-bold">128</div>
+                <p className="text-sm text-[#002147]">Across 7 faculties</p>
               </CardContent>
             </Card>
 
-            <Card className="shadow-none border-slate-200">
+            <Card className="shadow-none border-slate-200 text-[#002147]">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Teaching staff</CardTitle>
+                <CardTitle className="text-base font-semibold">Teaching staff</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">312</div>
-                <p className="text-xs text-muted-foreground">Including adjunct and visiting</p>
+                <div className="text-3xl font-bold">312</div>
+                <p className="text-sm text-[#002147]">Including adjunct and visiting</p>
               </CardContent>
             </Card>
           </div>
@@ -103,27 +113,13 @@ export default function DashboardPage() {
             </CardHeader>
             <CardContent className="h-72">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={departmentData} margin={{ top: 10, right: 16, left: 0, bottom: 0 }}>
+                <BarChart data={data} margin={{ top: 10, right: 16, left: 0, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-                  <XAxis dataKey="department" tickLine={false} axisLine={false} tick={{ fontSize: 11 }} />
-                  <YAxis
-                    tickLine={false}
-                    axisLine={false}
-                    tick={{ fontSize: 11 }}
-                    domain={[0, 100]}
-                    tickFormatter={(value) => `${value}%`}
-                  />
-                  <Tooltip
-                    cursor={{ fill: "rgba(148, 163, 184, 0.1)" }}
-                    formatter={(value: number) => [`${value}%`, "Attendance"]}
-                  />
-                  <Bar dataKey="attendance" fill="#0ea5e9" radius={[4, 4, 0, 0]} isAnimationActive>
-                    <LabelList
-                      dataKey="attendance"
-                      position="top"
-                      formatter={(value: any) => `${value}%`}
-                    />
-                  </Bar>
+                  <XAxis dataKey="name" tickLine={false} axisLine={false} tick={{ fontSize: 11 }} />
+                  <YAxis tickLine={false} axisLine={false} tick={{ fontSize: 11 }} />
+                  <Tooltip cursor={{ fill: "rgba(148, 163, 184, 0.1)" }} />
+                  <Bar dataKey="present" fill="#3b82f6" />
+                  <Bar dataKey="absent" fill="#ef4444" />
                 </BarChart>
               </ResponsiveContainer>
             </CardContent>
