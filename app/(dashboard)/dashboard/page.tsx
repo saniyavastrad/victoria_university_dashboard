@@ -6,15 +6,18 @@ import {
   Bar,
   BarChart,
   CartesianGrid,
-  ResponsiveContainer,
-  Tooltip,
   XAxis,
   YAxis,
-  LabelList,
   Pie,
   PieChart,
   Cell,
 } from "recharts";
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
+import type { ChartConfig } from "@/components/ui/chart";
 
 const departmentData = [
   { department: "Business Management", attendance: 92 },
@@ -40,7 +43,23 @@ const lecturerPieData = [
   { name: "Engineering", attendance: 87 },
 ];
 
-const PIE_COLORS = ["#0ea5e9", "#6366f1", "#22c55e", "#f97316", "#e11d48"];
+const attendanceChartConfig: ChartConfig = {
+  present: {
+    label: "Present",
+    color: "var(--chart-1)",
+  },
+  absent: {
+    label: "Absent",
+    color: "var(--chart-2)",
+  },
+};
+
+const departmentAttendanceChartConfig: ChartConfig = {
+  attendance: {
+    label: "Attendance",
+    color: "var(--chart-1)",
+  },
+};
 
 export default function DashboardPage() {
   return (
@@ -56,7 +75,7 @@ export default function DashboardPage() {
         </CardHeader>
         <CardContent className="pt-0 pb-5">
           <div className="grid gap-4 md:grid-cols-3">
-            <Card className="shadow-none border-slate-200 text-[#002147]">
+            <Card className="shadow-none border-slate-200 bg-sky-100 text-[#002147]">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-base font-semibold">Enrolled students</CardTitle>
                 <Badge variant="secondary" className="text-xs font-semibold text-[#002147]">
@@ -69,7 +88,7 @@ export default function DashboardPage() {
               </CardContent>
             </Card>
 
-            <Card className="shadow-none border-slate-200 text-[#002147]">
+            <Card className="shadow-none border-slate-200 bg-sky-100 text-[#002147]">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-base font-semibold">Active courses</CardTitle>
               </CardHeader>
@@ -79,7 +98,7 @@ export default function DashboardPage() {
               </CardContent>
             </Card>
 
-            <Card className="shadow-none border-slate-200 text-[#002147]">
+            <Card className="shadow-none border-slate-200 bg-sky-100 text-[#002147]">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-base font-semibold">Teaching staff</CardTitle>
               </CardHeader>
@@ -111,17 +130,28 @@ export default function DashboardPage() {
                 Attendance by Department
               </CardTitle>
             </CardHeader>
-            <CardContent className="h-72">
-              <ResponsiveContainer width="100%" height="100%">
+            <CardContent>
+              <ChartContainer
+                config={attendanceChartConfig}
+                className="mt-2"
+              >
                 <BarChart data={data} margin={{ top: 10, right: 16, left: 0, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
                   <XAxis dataKey="name" tickLine={false} axisLine={false} tick={{ fontSize: 11 }} />
                   <YAxis tickLine={false} axisLine={false} tick={{ fontSize: 11 }} />
-                  <Tooltip cursor={{ fill: "rgba(148, 163, 184, 0.1)" }} />
-                  <Bar dataKey="present" fill="#3b82f6" />
-                  <Bar dataKey="absent" fill="#ef4444" />
+                  <ChartTooltip content={<ChartTooltipContent />} />
+                  <Bar
+                    dataKey="present"
+                    fill="#1D4ED8"
+                    radius={[4, 4, 0, 0]}
+                  />
+                  <Bar
+                    dataKey="absent"
+                    fill="#EF4444"
+                    radius={[4, 4, 0, 0]}
+                  />
                 </BarChart>
-              </ResponsiveContainer>
+              </ChartContainer>
             </CardContent>
           </Card>
 
@@ -131,15 +161,14 @@ export default function DashboardPage() {
                 Department Attendance Breakdown
               </CardTitle>
             </CardHeader>
-            <CardContent className="h-80">
-              <ResponsiveContainer width="100%" height="100%">
+            <CardContent>
+              <ChartContainer
+                config={departmentAttendanceChartConfig}
+                className="mt-2"
+              >
                 <PieChart>
-                  <Tooltip
-                    cursor={{ fill: "rgba(148, 163, 184, 0.1)" }}
-                    formatter={(value: number, _name, entry: any) => [
-                      `${value}%`,
-                      entry?.payload?.name ?? "Attendance",
-                    ]}
+                  <ChartTooltip
+                    content={<ChartTooltipContent />}
                   />
                   <Pie
                     data={lecturerPieData}
@@ -154,11 +183,14 @@ export default function DashboardPage() {
                     label={({ name }) => name}
                   >
                     {lecturerPieData.map((entry, index) => (
-                      <Cell key={entry.name} fill={PIE_COLORS[index % PIE_COLORS.length]} />
+                      <Cell
+                        key={entry.name}
+                        fill={`var(--chart-${(index % 5) + 1})`}
+                      />
                     ))}
                   </Pie>
                 </PieChart>
-              </ResponsiveContainer>
+              </ChartContainer>
             </CardContent>
           </Card>
         </div>

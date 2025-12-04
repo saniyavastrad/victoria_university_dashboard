@@ -6,8 +6,6 @@ import {
   Bar,
   BarChart,
   CartesianGrid,
-  ResponsiveContainer,
-  Tooltip,
   XAxis,
   YAxis,
   LabelList,
@@ -15,6 +13,12 @@ import {
   PieChart,
   Cell,
 } from "recharts";
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
+import type { ChartConfig } from "@/components/ui/chart";
 
 const departmentData = [
   { department: "Business Management", attendance: 92 },
@@ -32,7 +36,19 @@ const lecturerPieData = [
   { name: "Engineering", attendance: 87 },
 ];
 
-const PIE_COLORS = ["#0ea5e9", "#6366f1", "#22c55e", "#f97316", "#e11d48"];
+const departmentAttendanceChartConfig: ChartConfig = {
+  attendance: {
+    label: "Attendance %",
+    color: "var(--chart-1)",
+  },
+};
+
+const departmentBreakdownChartConfig: ChartConfig = {
+  attendance: {
+    label: "Attendance %",
+    color: "var(--chart-1)",
+  },
+};
 
 export default function LecturerAttendancePage() {
   return (
@@ -96,11 +112,22 @@ export default function LecturerAttendancePage() {
                 Attendance by Department
               </CardTitle>
             </CardHeader>
-            <CardContent className="h-72">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={departmentData} margin={{ top: 10, right: 16, left: 0, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-                  <XAxis dataKey="department" tickLine={false} axisLine={false} tick={{ fontSize: 11 }} />
+            <CardContent>
+              <ChartContainer
+                config={departmentAttendanceChartConfig}
+                className="mt-2"
+              >
+                <BarChart
+                  data={departmentData}
+                  margin={{ top: 10, right: 16, left: 0, bottom: 0 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                  <XAxis
+                    dataKey="department"
+                    tickLine={false}
+                    axisLine={false}
+                    tick={{ fontSize: 11 }}
+                  />
                   <YAxis
                     tickLine={false}
                     axisLine={false}
@@ -108,11 +135,15 @@ export default function LecturerAttendancePage() {
                     domain={[0, 100]}
                     tickFormatter={(value) => `${value}%`}
                   />
-                  <Tooltip
-                    cursor={{ fill: "rgba(148, 163, 184, 0.1)" }}
-                    formatter={(value: number) => [`${value}%`, "Attendance"]}
+                  <ChartTooltip
+                    content={<ChartTooltipContent />}
                   />
-                  <Bar dataKey="attendance" fill="#0ea5e9" radius={[4, 4, 0, 0]} isAnimationActive>
+                  <Bar
+                    dataKey="attendance"
+                    fill="var(--color-attendance)"
+                    radius={[4, 4, 0, 0]}
+                    isAnimationActive
+                  >
                     <LabelList
                       dataKey="attendance"
                       position="top"
@@ -120,7 +151,7 @@ export default function LecturerAttendancePage() {
                     />
                   </Bar>
                 </BarChart>
-              </ResponsiveContainer>
+              </ChartContainer>
             </CardContent>
           </Card>
 
@@ -130,15 +161,14 @@ export default function LecturerAttendancePage() {
                 Department Attendance Breakdown
               </CardTitle>
             </CardHeader>
-            <CardContent className="h-80">
-              <ResponsiveContainer width="100%" height="100%">
+            <CardContent>
+              <ChartContainer
+                config={departmentBreakdownChartConfig}
+                className="mt-2"
+              >
                 <PieChart>
-                  <Tooltip
-                    cursor={{ fill: "rgba(148, 163, 184, 0.1)" }}
-                    formatter={(value: number, _name, entry: any) => [
-                      `${value}%`,
-                      entry?.payload?.name ?? "Attendance",
-                    ]}
+                  <ChartTooltip
+                    content={<ChartTooltipContent />}
                   />
                   <Pie
                     data={lecturerPieData}
@@ -153,11 +183,14 @@ export default function LecturerAttendancePage() {
                     label={({ name }) => name}
                   >
                     {lecturerPieData.map((entry, index) => (
-                      <Cell key={entry.name} fill={PIE_COLORS[index % PIE_COLORS.length]} />
+                      <Cell
+                        key={entry.name}
+                        fill={`var(--chart-${(index % 5) + 1})`}
+                      />
                     ))}
                   </Pie>
                 </PieChart>
-              </ResponsiveContainer>
+              </ChartContainer>
             </CardContent>
           </Card>
         </div>
