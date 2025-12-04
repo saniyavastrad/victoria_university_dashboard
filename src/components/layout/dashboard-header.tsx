@@ -12,7 +12,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Select } from "@/components/ui/select";
 import { Breadcrumb } from "./breadcrumb";
 
 interface DashboardHeaderProps {
@@ -42,24 +41,6 @@ export const DashboardHeader: FC<DashboardHeaderProps> = ({
             <Breadcrumb />
           </span>
         </div>
-      </div>
-
-      <div className="hidden flex-1 items-center justify-center gap-3 lg:flex">
-        <Select label="Campus" defaultValue="all">
-          <option value="all">All campuses</option>
-          <option value="main">Main Campus</option>
-          <option value="city">City Campus</option>
-        </Select>
-        <Select label="Academic Year" defaultValue="2024-2025">
-          <option value="2023-2024">2023/2024</option>
-          <option value="2024-2025">2024/2025</option>
-          <option value="2025-2026">2025/2026</option>
-        </Select>
-        <Select label="Semester" defaultValue="sem1">
-          <option value="sem1">Semester 1</option>
-          <option value="sem2">Semester 2</option>
-          <option value="summer">Summer</option>
-        </Select>
       </div>
 
       <div className="flex flex-1 items-center justify-end gap-2">
