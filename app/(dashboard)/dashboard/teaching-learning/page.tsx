@@ -287,71 +287,72 @@ export default function TeachingLearningPage() {
           </div>
         </CardHeader>
       </Card>
+      <div className="dashboard-fade-slide-in flex flex-col gap-4">
+        <div className="flex items-center justify-between">
+          <div />
 
-      <div className="flex items-center justify-between">
-        <div />
+          <Button
+            variant="ghost"
+            className="bg-red-700 text-white hover:bg-red-800"
+            onClick={handleButtonClick}
+          >
+            Upload Excel
+          </Button>
+        </div>
 
-        <Button
-          variant="ghost"
-          className="bg-red-700 text-white hover:bg-red-800"
-          onClick={handleButtonClick}
-        >
-          Upload Excel
-        </Button>
-      </div>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept=".xlsx"
+          className="hidden"
+          onChange={handleFileChange}
+        />
 
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept=".xlsx"
-        className="hidden"
-        onChange={handleFileChange}
-      />
-
-      {rows.length > 0 && (
-        <>
-          <div className="mt-4 overflow-x-auto rounded-md border bg-white">
-            <table className="min-w-full text-left text-sm">
-              <thead className="bg-red-700 text-white">
-                <tr>
-                  <th className="px-4 py-2">Module Name</th>
-                  <th className="px-4 py-2">Student Number</th>
-                  <th className="px-4 py-2">Student Percentage</th>
-                  <th className="px-4 py-2">Comment</th>
-                </tr>
-              </thead>
-              <tbody>
-                {rows.map((row, index) => (
-                  <tr
-                    key={`${row.moduleName}-${index}`}
-                    className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}
-                  >
-                    <td className="px-4 py-2 align-top">{row.moduleName}</td>
-                    <td className="px-4 py-2 align-top">{row.studentCount}</td>
-                    <td className="px-4 py-2 align-top">
-                      {row.percentagePlaceholder ?? "-"}
-                    </td>
-                    <td className="px-4 py-2 align-top">
-                      {row.commentPlaceholder ?? "-"}
-                    </td>
+        {rows.length > 0 && (
+          <>
+            <div className="mt-4 overflow-x-auto rounded-md border bg-white">
+              <table className="min-w-full text-left text-sm">
+                <thead className="bg-red-700 text-white">
+                  <tr>
+                    <th className="px-4 py-2">Module Name</th>
+                    <th className="px-4 py-2">Student Number</th>
+                    <th className="px-4 py-2">Student Percentage</th>
+                    <th className="px-4 py-2">Comment</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {rows.map((row, index) => (
+                    <tr
+                      key={`${row.moduleName}-${index}`}
+                      className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}
+                    >
+                      <td className="px-4 py-2 align-top">{row.moduleName}</td>
+                      <td className="px-4 py-2 align-top">{row.studentCount}</td>
+                      <td className="px-4 py-2 align-top">
+                        {row.percentagePlaceholder ?? "-"}
+                      </td>
+                      <td className="px-4 py-2 align-top">
+                        {row.commentPlaceholder ?? "-"}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
 
-          <div className="mt-4 flex justify-end">
-            <Button
-              type="button"
-              variant="ghost"
-              className="bg-red-700 text-white hover:bg-red-800"
-              onClick={handleExportReport}
-            >
-              Export Report
-            </Button>
-          </div>
-        </>
-      )}
+            <div className="mt-4 flex justify-end">
+              <Button
+                type="button"
+                variant="ghost"
+                className="bg-red-700 text-white hover:bg-red-800"
+                onClick={handleExportReport}
+              >
+                Export Report
+              </Button>
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 }
