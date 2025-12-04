@@ -3,6 +3,8 @@
 import { useRef, useState } from "react";
 import * as XLSX from "xlsx";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ChevronRight } from "lucide-react";
 import {
   BorderStyle,
   Document,
@@ -102,7 +104,7 @@ export default function TeachingLearningPage() {
         {
           children: [
             new Paragraph({
-              text: "Teaching & Learning Attendance Report",
+              text: "Student Attendance Report",
               heading: "Heading1",
             }),
             new Paragraph(" "),
@@ -113,7 +115,7 @@ export default function TeachingLearningPage() {
     });
 
     const blob = await Packer.toBlob(doc);
-    saveAs(blob, "teaching-learning-report.docx");
+    saveAs(blob, "student-attendances-report.docx");
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -271,16 +273,23 @@ export default function TeachingLearningPage() {
 
   return (
     <div className="flex min-h-[calc(100vh-4rem)] flex-col gap-4">
+      <Card className="border-sky-100 bg-sky-50/70">
+        <CardHeader className="flex flex-col gap-2 pb-3">
+          <CardTitle className="text-xl font-semibold tracking-tight">
+            Student Attendances
+          </CardTitle>
+          <div className="flex items-center gap-1 text-xs text-muted-foreground">
+            <span>Dashboard</span>
+            <ChevronRight className="h-3 w-3" />
+            <span>Quality Modules</span>
+            <ChevronRight className="h-3 w-3" />
+            <span className="font-medium text-foreground">Student Attendances</span>
+          </div>
+        </CardHeader>
+      </Card>
+
       <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight">
-            Teaching &amp; Learning
-          </h1>
-          <p className="text-sm text-muted-foreground">
-            This is the Teaching &amp; Learning module area. You can place course quality
-            metrics, evaluations, and related dashboards here.
-          </p>
-        </div>
+        <div />
 
         <Button
           variant="ghost"
