@@ -148,6 +148,9 @@ export default function TeachingLearningPage() {
         let headerRowIndex = -1;
         let nameColIndex = -1;
         let totalColIndex = -1;
+        let moduleHeaderRowIndex = -1;
+        let moduleNameColIndex = -1;
+        let codeColIndex = -1;
 
         if (rowsArray.length > 0) {
           for (let r = 0; r < rowsArray.length; r++) {
@@ -160,12 +163,29 @@ export default function TeachingLearningPage() {
               (cell) =>
                 typeof cell === "string" && cell.trim().toLowerCase() === "total"
             );
+            const moduleNameIndex = row.findIndex(
+              (cell) =>
+                typeof cell === "string" &&
+                cell.trim().toLowerCase() === "module name"
+            );
+            const codeIndex = row.findIndex(
+              (cell) =>
+                typeof cell === "string" &&
+                cell.trim().toLowerCase().includes("code")
+            );
             if (nameIndex !== -1) {
               headerRowIndex = r;
               nameColIndex = nameIndex;
             }
             if (totalIndex !== -1) {
               totalColIndex = totalIndex;
+            }
+            if (moduleNameIndex !== -1) {
+              moduleHeaderRowIndex = r;
+              moduleNameColIndex = moduleNameIndex;
+            }
+            if (codeIndex !== -1) {
+              codeColIndex = codeIndex;
             }
 
             if (headerRowIndex !== -1 && nameColIndex !== -1 && totalColIndex !== -1) {
@@ -185,6 +205,28 @@ export default function TeachingLearningPage() {
                 studentCount += 1;
               }
             }
+          }
+        }
+
+        let moduleName = sheetName;
+
+        if (moduleHeaderRowIndex !== -1 && moduleNameColIndex !== -1) {
+          const headerRow = rowsArray[moduleHeaderRowIndex] ?? [];
+          const endCol =
+            codeColIndex !== -1 && codeColIndex > moduleNameColIndex
+              ? codeColIndex
+              : headerRow.length;
+          const parts: string[] = [];
+          for (let c = moduleNameColIndex + 1; c < endCol; c++) {
+            const cell = headerRow[c];
+            if (cell === null || cell === undefined) continue;
+            const text = String(cell).trim();
+            if (text.length > 0) {
+              parts.push(text);
+            }
+          }
+          if (parts.length > 0) {
+            moduleName = parts.join(" ").toUpperCase();
           }
         }
 
@@ -236,7 +278,9 @@ export default function TeachingLearningPage() {
             percentagePlaceholder = `${avg.toFixed(1)}%`;
           }
 
-          if (below75Count > 0 || zeroCount > 0) {
+          if (totalCount > 0 && below75Count === 0 && zeroCount === 0) {
+            commentPlaceholder = "All students obtained 75% and above";
+          } else if (below75Count > 0 || zeroCount > 0) {
             const parts: string[] = [];
             if (below75Count > 0) {
               parts.push(
@@ -255,7 +299,7 @@ export default function TeachingLearningPage() {
         }
 
         return {
-          moduleName: sheetName,
+          moduleName,
           studentCount,
           percentagePlaceholder,
           commentPlaceholder,
@@ -319,6 +363,7 @@ export default function TeachingLearningPage() {
               <table className="min-w-full text-left text-sm">
                 <thead className="bg-red-700 text-white">
                   <tr>
+                    <th className="px-4 py-2">S/N</th>
                     <th className="px-4 py-2">Module Name</th>
                     <th className="px-4 py-2">Student Number</th>
                     <th className="px-4 py-2">Student Percentage</th>
@@ -331,6 +376,7 @@ export default function TeachingLearningPage() {
                       key={`${row.moduleName}-${index}`}
                       className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}
                     >
+                      <td className="px-4 py-2 align-top">{index + 1}</td>
                       <td className="px-4 py-2 align-top">{row.moduleName}</td>
                       <td className="px-4 py-2 align-top">{row.studentCount}</td>
                       <td className="px-4 py-2 align-top">
