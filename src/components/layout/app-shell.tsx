@@ -6,6 +6,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { Bell, Menu, Sun } from "lucide-react";
 import { Sidebar } from "./sidebar";
+import { ChatWidget } from "./chat-widget";
 
 interface AppShellProps {
   children: ReactNode;
@@ -26,7 +27,7 @@ export const AppShell: FC<AppShellProps> = ({ children }) => {
         </SheetContent>
       </Sheet>
 
-      <div className="flex flex-1 flex-col max-h-screen bg-slate-50">
+      <div className="relative flex flex-1 flex-col max-h-screen bg-slate-50">
         <div className="flex h-14 items-center justify-between gap-3 px-4 md:px-6">
           <Button
             variant="ghost"
@@ -70,6 +71,8 @@ export const AppShell: FC<AppShellProps> = ({ children }) => {
         <main className="flex-1 overflow-y-auto px-4 py-4 md:px-6 md:py-6">
           {children}
         </main>
+
+        <ChatWidget />
       </div>
     </div>
   );

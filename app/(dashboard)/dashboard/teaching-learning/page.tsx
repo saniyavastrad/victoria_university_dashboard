@@ -13,6 +13,7 @@ import {
   Table,
   TableCell,
   TableRow,
+  TextRun,
   WidthType,
 } from "docx";
 import { saveAs } from "file-saver";
@@ -50,8 +51,12 @@ export default function TeachingLearningPage() {
             new TableCell({
               children: [
                 new Paragraph({
-                  text,
-                  bold: true,
+                  children: [
+                    new TextRun({
+                      text,
+                      bold: true,
+                    }),
+                  ],
                 }),
               ],
             })
